@@ -1,0 +1,24 @@
+# Build artifacts
+build/
+*.o
+*.so
+*.a
+*.exe
+
+# Platform-specific
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE files
+.vscode/
+.idea/
+*.pro.user
+
+# Logs
+*.log
+logs/
+
+# Constitutional compliance reports
+constitutional_reports/
