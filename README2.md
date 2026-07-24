@@ -5,19 +5,23 @@ that currently exists in the BlueShare repository.
 
 ## 1. Current scope
 
-BlueShare is not yet one integrated desktop or network service. The repository
-currently provides:
+BlueShare now has a working same-LAN browser peer service, but it is not yet a
+packaged desktop or production network service. The repository currently
+provides:
 
 - a deterministic Python spatial-acceptance model measured in metres;
 - a standalone C BlueShare mixed-consent demonstration;
 - a Linux C NSIGII demonstration;
 - an optional OpenSSL Node-Zero demonstration;
+- a standard-library Python join/heartbeat service and dependency-free web
+  client;
 - two standalone Python demonstrations; and
 - an experimental NumPy pruning module.
 
 There is currently no `blueshare --desktop` command, Bluetooth pairing daemon,
-Android package, Java/JAR layer, Rust FFI bridge, or HTML application. The files
-under `apps/desktop/` document a future integration boundary only.
+Android package, Java/JAR layer, Rust FFI bridge, TLS deployment, or installed
+operating-system service. The HTML application under `apps/desktop/` is served
+by the Python LAN prototype.
 
 The tomography model
 
@@ -320,9 +324,48 @@ Run them with:
 Do not combine the three C files into one executable: all three define their
 own `main()` function.
 
-## 9. Run the Python demonstrations
+## 9. Run the Python LAN service and demonstrations
 
 The Python scripts use only the standard library and require no compilation.
+
+### Connect multiple Windows devices on the same trusted LAN
+
+Find the host laptop's Wi-Fi IPv4 address, choose a temporary pairing code, and
+run from the repository root. For the currently verified host address:
+
+```powershell
+python packages\python\blueshare\peer_service.py `
+  --bind 192.168.1.117 `
+  --port 8765 `
+  --pairing-code 246810 `
+  --max-media-mb 256
+```
+
+On both laptops, open `http://192.168.1.117:8765/` in a modern browser. Enter a
+different device name on each laptop, use the same pairing code, and enter each
+device's manual `(U,V,W)` position in metres. The topology view then reports
+peer lifecycle state and symmetric Euclidean distance. Press `Ctrl+C` in the
+host terminal to stop the service.
+
+For shared music, pair a Bluetooth headset or speaker to each Windows peer and
+select it in **Settings > System > Sound** on that device. In every joined
+BlueShare browser, select **Enable this speaker**. A verified peer may then
+select an audio file, upload it to the room, and use play, pause, seek, or stop.
+Transport commands affect the room; volume affects only the current device.
+
+Run the peer registry tests with:
+
+```powershell
+py -3.14 -m unittest packages.python.tests.test_peer_service packages.python.tests.test_media_room -v
+```
+
+Protocol version 0.2 uses unencrypted HTTP and in-memory state. Use it only on a
+trusted LAN. It provides actual LAN audio streaming and shared media controls,
+but not physical ranging, Bluetooth discovery/pairing, Windows output-device
+routing, or Internet Connection Sharing. See the detailed
+[`Windows media-room guide`](docs/deployment/windows-media-room.md).
+
+### Standalone demonstrations
 
 NSIGII echo demonstration:
 
@@ -343,9 +386,9 @@ python3 packages/python/blueshare/nsiggi.py
 python3 packages/python/blueshare/blueshare.py
 ```
 
-These scripts model in-memory behavior. They do not scan devices, connect two
-headsets, share an Internet connection, process real payments, or start a
-background service.
+These two demonstration scripts model in-memory behavior. Unlike
+`peer_service.py`, they do not connect browser peers. None of the Python code
+scans headsets, shares an Internet connection, or processes real payments.
 
 ## 10. Exercise the pruning research module
 
@@ -425,6 +468,19 @@ behavior. It does not mean a real peer connection was attempted.
 The current repository has no discovery or pairing adapter. Compiling the demos
 will not add Bluetooth support to the operating system.
 
+### The other laptop cannot open the BlueShare URL
+
+Confirm both laptops are on the same trusted Wi-Fi, use the host's Wi-Fi IPv4
+address rather than `127.0.0.1`, and keep the service terminal running. Windows
+may ask to allow Python on private/public networks; allow only the trusted
+network profile you are using. Test `http://HOST_IP:8765/api/health` in the
+other laptop's browser.
+
+### Join says the pairing code is invalid
+
+Use the exact temporary code printed by the host service. Pairing codes are not
+stored in the browser and can change every time the service starts.
+
 ## 14. Clean generated outputs
 
 Ask CMake to clean compiled targets while retaining its configuration:
@@ -449,8 +505,9 @@ Before building a desktop or Android package:
 2. Add a real `blueshare_test` executable and constitutional tests.
 3. Define the node reconstruction contract `T_G(n)=(U_n,V_n,W_n)` and metre
    uncertainty semantics.
-4. Add a versioned local service protocol.
-5. Implement a simulated two-host adapter.
+4. Harden the implemented protocol with TLS, persistent identity, and service
+   installation.
+5. Add automated multi-process and two-host integration tests.
 6. Add physical discovery/ranging adapters without changing the acceptance
    contract.
 7. Build the desktop and Android shells after the service boundary is stable.

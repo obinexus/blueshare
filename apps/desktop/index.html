@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>BlueShare LAN</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">OBINexus · trusted LAN vertical slice</p>
+        <h1>BlueShare</h1>
+        <p class="subtitle">Map peers in metres and share synchronized audio across the LAN.</p>
+      </div>
+      <div class="service-pill" id="service-pill" data-state="checking">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="service-status">Checking host</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="card join-card" id="join-card">
+        <div class="section-heading">
+          <div>
+            <p class="step">Step 1</p>
+            <h2>Join this BlueShare host</h2>
+          </div>
+          <p class="muted">The host operator provides the temporary pairing code.</p>
+        </div>
+
+        <form id="join-form">
+          <div class="form-grid">
+            <label>
+              <span>Device name</span>
+              <input id="peer-name" name="peerName" maxlength="48" pattern="[A-Za-z0-9](?:[A-Za-z0-9 ._]|-){0,47}" placeholder="Other-Laptop" required>
+            </label>
+            <label>
+              <span>Pairing code</span>
+              <input id="pairing-code" name="pairingCode" minlength="4" maxlength="32" autocomplete="one-time-code" placeholder="6-digit code" required>
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Manual tomographic node coordinate</legend>
+            <p class="field-note"><code>T<sub>G</sub>(n) = (U, V, W)</code> in metres. These values are entered manually; no physical ranging is active.</p>
+            <div class="coordinate-grid">
+              <label><span>U / x</span><input id="position-u" type="number" step="0.01" value="0" required></label>
+              <label><span>V / y</span><input id="position-v" type="number" step="0.01" value="0" required></label>
+              <label><span>W / z</span><input id="position-w" type="number" step="0.01" value="0" required></label>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button class="primary" type="submit" id="join-button">Join network</button>
+            <p class="form-error" id="form-error" role="alert"></p>
+          </div>
+        </form>
+      </section>
+
+      <section class="dashboard" id="dashboard" hidden>
+        <div class="metric-grid">
+          <article class="metric-card">
+            <span>MMUKO state</span>
+            <strong id="mmuko-state" data-state="ACTIVE">ACTIVE</strong>
+          </article>
+          <article class="metric-card">
+            <span>Connected peers</span>
+            <strong id="connected-count">0</strong>
+          </article>
+          <article class="metric-card">
+            <span>Last heartbeat</span>
+            <strong id="last-heartbeat">Waiting</strong>
+          </article>
+          <article class="metric-card">
+            <span>Position source</span>
+            <strong class="small">Manual metres</strong>
+          </article>
+        </div>
+
+        <section class="card topology-card">
+          <div class="section-heading">
+            <div>
+              <p class="step">Live topology</p>
+              <h2>LAN peer nodes</h2>
+            </div>
+            <div class="session-actions">
+              <button class="secondary" type="button" id="heartbeat-button">Heartbeat now</button>
+              <button class="danger" type="button" id="leave-button">Leave</button>
+            </div>
+          </div>
+          <div class="topology-note" id="topology-note">Waiting for topology…</div>
+          <div class="peer-grid" id="peer-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="card coordinate-card">
+          <div>
+            <p class="step">Position update</p>
+            <h2>Move this node</h2>
+            <p class="muted">Change U, V, or W. The next heartbeat sends a strictly newer coordinate sequence.</p>
+          </div>
+          <div class="coordinate-grid compact">
+            <label><span>U / x</span><input id="live-u" type="number" step="0.01" value="0"></label>
+            <label><span>V / y</span><input id="live-v" type="number" step="0.01" value="0"></label>
+            <label><span>W / z</span><input id="live-w" type="number" step="0.01" value="0"></label>
+          </div>
+        </section>
+
+        <section class="card media-card">
+          <div class="section-heading">
+            <div>
+              <p class="step">BlueShare media room</p>
+              <h2>Share music with every peer</h2>
+            </div>
+            <p class="muted">Any verified peer can upload a track and control the shared room transport.</p>
+          </div>
+
+          <div class="media-layout">
+            <div class="media-source">
+              <label>
+                <span>Audio file on this Windows device</span>
+                <input id="media-file" type="file" accept="audio/*">
+              </label>
+              <button class="primary" type="button" id="media-upload-button">Upload to room</button>
+              <p class="media-message" id="media-message" role="status">No room audio has been selected.</p>
+              <p class="field-note">The current prototype keeps one track in the host's ignored <code>build/peer-media</code> directory. Upload only media you are allowed to share.</p>
+            </div>
+
+            <div class="media-player">
+              <div class="media-now-playing">
+                <div>
+                  <span class="media-label">Now playing</span>
+                  <strong id="media-title">No shared track</strong>
+                </div>
+                <span class="media-state" id="media-state" data-state="EMPTY">EMPTY</span>
+              </div>
+
+              <audio id="room-audio" preload="metadata"></audio>
+
+              <div class="transport-actions">
+                <button class="secondary" type="button" id="media-enable-button">Enable this speaker</button>
+                <button class="primary" type="button" id="media-play-button" disabled>Play room</button>
+                <button class="secondary" type="button" id="media-pause-button" disabled>Pause</button>
+                <button class="danger" type="button" id="media-stop-button" disabled>Stop</button>
+              </div>
+
+              <label class="range-field">
+                <span>Room position</span>
+                <input id="media-seek" type="range" min="0" max="1000" value="0" disabled>
+              </label>
+              <div class="timeline">
+                <span id="media-position">0:00</span>
+                <span id="media-duration">0:00</span>
+              </div>
+
+              <label class="range-field">
+                <span>Volume on this device only</span>
+                <input id="local-volume" type="range" min="0" max="1" step="0.01" value="0.8">
+              </label>
+              <p class="field-note">On Windows, pair a Bluetooth headset to each peer device and choose it as that device's sound output. BlueShare synchronizes the LAN media; Windows performs the final Bluetooth audio routing.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card event-card">
+          <div class="section-heading">
+            <div>
+              <p class="step">Protocol evidence</p>
+              <h2>Recent events</h2>
+            </div>
+            <button class="secondary" type="button" id="clear-events">Clear</button>
+          </div>
+          <ol class="event-list" id="event-list"></ol>
+        </section>
+      </section>
+    </main>
+
+    <footer>
+      <p>This service provides trusted-LAN peer lifecycle, manual spatial topology, shared audio streaming, and synchronized room controls. It does not discover or pair Bluetooth devices, perform physical ranging, route Windows audio endpoints, share the Internet, or provide production authentication.</p>
+    </footer>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

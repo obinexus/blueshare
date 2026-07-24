@@ -16,10 +16,12 @@
 
 - [BlueShare overview](vision/blueshare-overview.md)
 - [BlueShare deployment guidance](deployment/blueshare-deployment.md)
+- [Windows media-room guide](deployment/windows-media-room.md)
 - [BPETS vision](vision/bpets-vision.md)
 
 ## Specifications
 
+- [LAN peer protocol 0.1](specifications/lan-peer-protocol.md)
 - [BPETS specification](specifications/bpets-spec.md)
 - [Pruning formal definition](specifications/pruning-formal-definition.tex)
 
