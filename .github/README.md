@@ -12,15 +12,25 @@ This directory packages and publishes the static BlueShare article to GitHub Pag
 
 The local action deliberately reuses `.gitlab/scripts/package_pages.py`. GitLab and GitHub therefore render the same source article and enforce the same asset checks. GitLab builds a `/blueshare` subdirectory for `www.obinexus.org`; GitHub uploads the article at the artifact root because GitHub already mounts the project at `/blueshare/`.
 
-## Enable GitHub Pages once
+## First deployment
 
-1. Push these files to the `main` branch of `https://github.com/obinexus/blueshare`.
-2. Open the repository on GitHub and select **Settings > Pages**.
-3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-4. Open **Actions > Publish BlueShare to GitHub Pages** and run the workflow if the push did not already start it.
-5. After the deployment job succeeds, open `https://obinexus.github.io/blueshare/`.
+The workflow requests Pages enablement with `enablement: true`. GitHub's configure-pages action does not permit first-time enablement with the workflow's default `GITHUB_TOKEN`, so choose one of these setup paths:
 
-GitHub creates the `github-pages` deployment environment automatically. Keep its deployment branch protection restricted to `main`.
+### Option A: enable Pages in the UI
+
+1. Open **Settings > Pages > Build and deployment** in `https://github.com/obinexus/blueshare`.
+2. Set **Source** to **GitHub Actions** and save it.
+3. Push the workflow change to `main`, or rerun **Actions > Publish BlueShare to GitHub Pages**.
+
+### Option B: allow automatic enablement
+
+1. Create a fine-grained personal access token for this repository with Pages write permission, or another token satisfying GitHub's configure-pages enablement requirements.
+2. Save it under **Settings > Secrets and variables > Actions** as the repository secret `PAGES_ENABLEMENT_TOKEN`.
+3. Push the workflow change to `main`, or rerun **Actions > Publish BlueShare to GitHub Pages**.
+
+The workflow uses `PAGES_ENABLEMENT_TOKEN` when it exists and otherwise falls back to `GITHUB_TOKEN` for repositories already enabled through the UI. After deployment succeeds, open `https://obinexus.github.io/blueshare/`.
+
+GitHub creates the `github-pages` deployment environment automatically. Keep its deployment branch protection restricted to `main`. If both setup paths are rejected, an administrator must allow Pages at the organization level before the workflow can continue.
 
 ## Test the site locally
 
