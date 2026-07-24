@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">BlueShare network mark</title>
+  <rect width="64" height="64" rx="14" fill="#071522"/>
+  <path d="M18 20 46 20M18 20 32 44M46 20 32 44" fill="none" stroke="#37b8ff" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="18" cy="20" r="7" fill="#52e0a0"/>
+  <circle cx="46" cy="20" r="7" fill="#37b8ff"/>
+  <circle cx="32" cy="44" r="7" fill="#f0bd4f"/>
+</svg>

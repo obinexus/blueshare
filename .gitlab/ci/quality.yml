@@ -1,0 +1,14 @@
+.blueshare-python-job:
+  image: python:3.12-alpine
+  interruptible: true
+  before_script:
+    - python --version
+
+blueshare:validate-pages:
+  extends: .blueshare-python-job
+  stage: validate
+  script:
+    - python -m py_compile .gitlab/scripts/package_pages.py
+    - python -m unittest discover -s .gitlab/tests -v
+  rules:
+    - when: on_success

@@ -1,0 +1,17 @@
+blueshare:build-pages:
+  extends: .blueshare-python-job
+  stage: build
+  script:
+    - >-
+      python .gitlab/scripts/package_pages.py
+      --output public
+      --base-path "$BLUESHARE_PAGES_BASE_PATH"
+      --canonical-url "$BLUESHARE_CANONICAL_URL"
+    - python .gitlab/scripts/package_pages.py --verify-only --output public --base-path "$BLUESHARE_PAGES_BASE_PATH"
+  artifacts:
+    name: "blueshare-pages-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - public/
+    expire_in: 1 week
+  rules:
+    - when: on_success

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071522">
+  <meta name="description" content="BlueShare - Sharing Moments Matters. A first-person guide to trusted-LAN peer topology and shared audio on Windows.">
+  <meta property="og:title" content="BlueShare - Sharing Moments Matters">
+  <meta property="og:description" content="A first-person BlueShare user story and Windows media-room guide by Nnamdi Michael Okpala.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.obinexus.org/blueshare/">
+  <link rel="canonical" href="https://www.obinexus.org/blueshare/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="assets/site.css">
+  <title>BlueShare - Sharing Moments Matters</title>
+</head>
+<body>
+  <a class="skip-link" href="#article">Skip to the article</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="./"><img src="assets/favicon.svg" alt=""><span>BlueShare</span></a>
+      <div class="nav-links">
+        <a href="#why-i-built-blueshare">Story</a>
+        <a href="#how-i-start-blueshare-on-windows">Windows guide</a>
+        <a href="downloads/blueshare-sharing-moments-matters.pdf">PDF</a>
+        <a href="mailto:okpalan@protonmail.com">Contact</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">OBINexus Computing - trusted LAN vertical slice</p>
+        <h1 id="hero-title">BlueShare</h1>
+        <p class="tagline">Sharing Moments Matters</p>
+        <p class="lede">I built BlueShare so people on the same trusted network can join as named peers, understand their manual spatial relationship, and interact with one shared media room.</p>
+        <div class="hero-actions">
+          <a class="button" href="#article">Read the guide</a>
+          <a class="button secondary" href="downloads/blueshare-sharing-moments-matters.pdf">Download the PDF</a>
+        </div>
+      </div>
+      <aside class="status-card" aria-label="Current prototype status">
+        <strong>BlueShare 0.2.0</strong>
+        <p>Windows-hosted trusted-LAN service</p>
+        <p>Manual coordinates in metres</p>
+        <p>Shared local audio with synchronized controls</p>
+        <p>By Nnamdi Michael Okpala</p>
+      </aside>
+    </section>
+    <aside class="boundary">
+      <strong>Provider boundary:</strong> BlueShare shares a YouTube Music page as a link only. It does not extract, proxy, or rebroadcast protected provider audio. Synchronized playback uses media the room is permitted to share.
+    </aside>
+    <div class="layout">
+      <aside class="toc" aria-label="Article contents"><strong>On this page</strong><a href="#a-first-person-user-story-and-windows-guide">A first-person user story and Windows guide</a>
+<a href="#why-i-built-blueshare">Why I built BlueShare</a>
+<a href="#what-blueshare-0-2-0-does-today">What BlueShare 0.2.0 does today</a>
+<a href="#what-a-youtube-music-url-means-in-blueshare">What a YouTube Music URL means in BlueShare</a>
+<a href="#how-i-start-blueshare-on-windows">How I start BlueShare on Windows</a>
+<a href="#how-i-join-each-device">How I join each device</a>
+<a href="#how-i-connect-bluetooth-audio">How I connect Bluetooth audio</a>
+<a href="#how-i-share-an-audio-file">How I share an audio file</a>
+<a href="#how-i-recover-from-the-errors-shown-in-the-screenshots">How I recover from the errors shown in the screenshots</a>
+<a href="#how-people-can-share-blueshare">How people can share BlueShare</a>
+<a href="#what-i-want-to-build-next">What I want to build next</a>
+<a href="#quick-reference">Quick reference</a>
+<a href="#closing">Closing</a></aside>
+      <article class="article" id="article"><h1 id="blueshare-sharing-moments-matters">BlueShare - Sharing Moments Matters</h1>
+<h2 id="a-first-person-user-story-and-windows-guide">A first-person user story and Windows guide</h2>
+<p><strong>By Nnamdi Michael Okpala</strong><br><strong>OBINexus Computing</strong><br><strong>Contact:</strong> <a href="mailto:okpalan@protonmail.com">okpalan@protonmail.com</a><br><strong>Project:</strong> BlueShare 0.2.0</p>
+<blockquote>I created BlueShare because listening together should feel like a shared moment, even when every person uses a different laptop, speaker, or headset.</blockquote>
+<h2 id="why-i-built-blueshare">Why I built BlueShare</h2>
+<p>For me, BlueShare is about more than pressing play. It is about creating a small, trusted network where devices can find one another as named peers, keep their connection alive, understand their relative position, and participate in one shared media room.</p>
+<p>My guiding phrase is <strong>Sharing Moments Matters</strong>.</p>
+<p>Today, BlueShare runs as a Windows-hosted trusted-LAN service. One Windows laptop starts the host, and other devices on the same Wi-Fi join through a web browser. Every joined peer receives its own MMUKO lifecycle state and manual three-dimensional coordinate:</p>
+<pre><code class="language-text">T_G(n) = (U, V, W)</code></pre>
+<p>The coordinates are measured in metres. They are currently entered by the user, so BlueShare does not yet claim that Wi-Fi or Bluetooth has physically measured the distance.</p>
+<p>Once joined, people can upload one audio file to the room and interact with it together. Any active peer can play, pause, seek, or stop. Each person controls their own volume, and Windows sends that browser&#x27;s audio to the locally selected Bluetooth headset or speaker.</p>
+<h2 id="what-blueshare-0-2-0-does-today">What BlueShare 0.2.0 does today</h2>
+<ul><li>Joins multiple browsers to one trusted Windows LAN host.</li><li>Uses a temporary pairing code and private session tokens.</li><li>Tracks peers as <code>ACTIVE</code>, <code>VERIFIED</code>, <code>REMEMBER</code>, or <code>LEFT</code>.</li><li>Recovers a retained peer after a temporary heartbeat interruption.</li><li>Displays manual <code>(U,V,W)</code> coordinates and symmetric distances in metres.</li><li>Accepts one user-selected audio file, up to 256 MiB by default.</li><li>Streams that file with HTTP byte-range support for buffering and seeking.</li><li>Synchronizes play, pause, seek, and stop through a shared host clock.</li><li>Lets every verified peer interact with the room transport.</li><li>Keeps volume local to each device.</li></ul>
+<p>BlueShare 0.2.0 is a working prototype, not a production music platform. It uses unencrypted HTTP, in-memory peer sessions, and a trusted local network.</p>
+<h2 id="what-a-youtube-music-url-means-in-blueshare">What a YouTube Music URL means in BlueShare</h2>
+<p>Here is the example provider link I tested as a sharing reference:</p>
+<p><a href="https://music.youtube.com/watch?v=TgOu00Mf3kI&amp;list=OLAK5uy_mgryJlILDE846ev_oLUtqPgtKuA92zdBs">Open the example YouTube Music track</a></p>
+<figure><img src="images/01-youtube-music-example.png" alt="YouTube Music provider example showing a track page" loading="lazy"><figcaption>YouTube Music provider example showing a track page</figcaption></figure>
+<p class="caption"><em>Figure 1. A provider-hosted track is a useful link to share, but the page URL is not a raw audio file.</em></p>
+<p>I need to be precise about this boundary. BlueShare cannot take a YouTube Music page URL, extract its protected audio, and rebroadcast it as if it were a local MP3. The provider controls authentication, licensing, advertising, encryption, and playback. A normal <code>music.youtube.com/watch</code> address is an HTML application, not a direct <code>audio/*</code> resource.</p>
+<p>For BlueShare 0.2.0, I use provider links in this lawful way:</p>
+<ol><li>I share the provider URL with the people in my room.</li><li>Each person opens the link using their own browser and provider account.</li><li>I do not download, extract, proxy, or redistribute the provider stream.</li><li>If I want BlueShare-synchronized playback, I upload an audio file that I own or have permission to share.</li></ol>
+<p>A future provider adapter can synchronize independent, authorized provider players by using an official provider API. That design should send control intent, such as play or seek, rather than copying protected media through the BlueShare host.</p>
+<h2 id="how-i-start-blueshare-on-windows">How I start BlueShare on Windows</h2>
+<p>I connect every device to the same trusted Wi-Fi. On the host laptop, I open Windows PowerShell and run:</p>
+<pre><code class="language-powershell">Set-Location C:\Users\OBINexus\Projects\blueshare\blueshare
+
+python packages\python\blueshare\peer_service.py `
+  --bind 192.168.1.117 `
+  --port 8765 `
+  --pairing-code 246810 `
+  --max-media-mb 256</code></pre>
+<p>I replace <code>192.168.1.117</code> if <code>ipconfig</code> shows a different Wi-Fi IPv4 address. I do not bind to <code>127.0.0.1</code> when another device must join because that address is available only inside the host laptop.</p>
+<figure><img src="images/02-windows-service-020.png" alt="Windows PowerShell running BlueShare peer service 0.2.0" loading="lazy"><figcaption>Windows PowerShell running BlueShare peer service 0.2.0</figcaption></figure>
+<p class="caption"><em>Figure 2. The host prints the URL, pairing code, media directory, upload limit, and coordinate source. HTTP 401 after a restart usually means a browser is still presenting an expired session token and must rejoin.</em></p>
+<p>I keep this PowerShell window open. If Windows Defender Firewall asks for permission, I allow Python only on the trusted network profile I am using.</p>
+<h2 id="how-i-join-each-device">How I join each device</h2>
+<p>On the host and every other Windows device, I open:</p>
+<pre><code class="language-text">http://192.168.1.117:8765/</code></pre>
+<p>Then I complete these steps:</p>
+<ol><li>I enter a distinct device name, such as <code>MMUKO</code>, <code>OBINexus</code>, or <code>Living-Room-Laptop</code>.</li><li>I enter the temporary pairing code shown by the host.</li><li>I enter the device&#x27;s manual <code>(U,V,W)</code> coordinate in metres.</li><li>I select <strong>Join network</strong>.</li><li>I wait until the device reaches <code>VERIFIED</code>.</li></ol>
+<figure><img src="images/03-blueshare-join-screen.png" alt="BlueShare join screen showing host version 0.2.0" loading="lazy"><figcaption>BlueShare join screen showing host version 0.2.0</figcaption></figure>
+<p class="caption"><em>Figure 3. The first screen joins a named peer and assigns its manual spatial coordinate.</em></p>
+<p>The first heartbeat verifies the session. If a browser sleeps or briefly loses the network, the host may retain that peer as <code>REMEMBER</code>. A valid heartbeat can recover it. If the service has restarted, I enter the pairing code again so the browser receives a new session token.</p>
+<h2 id="how-i-connect-bluetooth-audio">How I connect Bluetooth audio</h2>
+<p>BlueShare synchronizes media over the LAN. Windows performs the final Bluetooth audio routing. On every listening Windows device, I:</p>
+<ol><li>Open <strong>Settings &gt; Bluetooth &amp; devices</strong>.</li><li>Select <strong>Add device &gt; Bluetooth</strong>.</li><li>Pair one headset or speaker to that device.</li><li>Open <strong>Settings &gt; System &gt; Sound</strong>.</li><li>Choose the paired device as the sound output.</li><li>Return to BlueShare and select <strong>Enable this speaker</strong>.</li><li>Set the local volume to a safe starting level.</li></ol>
+<p>This design lets several people listen through several Bluetooth headsets when each headset is attached to its own BlueShare peer device. BlueShare does not yet force one Windows Bluetooth radio to drive several headset endpoints at once.</p>
+<h2 id="how-i-share-an-audio-file">How I share an audio file</h2>
+<p>After every device is joined and its speaker is enabled, I use the media room:</p>
+<ol><li>I select <strong>Choose File</strong>.</li><li>I choose an audio file that I own or have permission to share.</li><li>I select <strong>Upload to room</strong>.</li><li>I wait for the track name and <code>READY</code> or <code>PAUSED</code> state to appear.</li><li>I select <strong>Play room</strong>.</li><li>Any verified participant may then play, pause, seek, or stop.</li><li>Each participant adjusts <strong>Volume on this device only</strong> for their own headset.</li></ol>
+<p>The host stores the current track under the ignored <code>build/peer-media/</code> directory. Uploading another track replaces the current room track. The audio endpoint supports byte ranges so browsers can seek without downloading the entire file before playback begins.</p>
+<figure><img src="images/04-blueshare-media-room.png" alt="BlueShare peer topology and shared media room" loading="lazy"><figcaption>BlueShare peer topology and shared media room</figcaption></figure>
+<p class="caption"><em>Figure 4. The media room shows the selected track, shared transport, local volume, peer topology, and protocol evidence. In this captured moment the host became unreachable, which correctly produced <code>Failed to fetch</code> events.</em></p>
+<h2 id="how-i-recover-from-the-errors-shown-in-the-screenshots">How I recover from the errors shown in the screenshots</h2>
+<h3 id="http-401-in-powershell">HTTP 401 in PowerShell</h3>
+<p>An HTTP 401 immediately after I restart BlueShare usually means an open browser still holds the previous process&#x27;s session token. Because the service registry is in memory, a restart creates a new session universe.</p>
+<p>I fix it by refreshing the page, returning to the join form, entering the current pairing code, and joining again.</p>
+<h3 id="heartbeat-failed-failed-to-fetch"><code>Heartbeat failed: Failed to fetch</code></h3>
+<p>This means the browser could not reach the BlueShare host. It is a transport failure, not proof that the audio format is invalid. I check:</p>
+<ol><li>The host PowerShell window is still running.</li><li>Both devices are still on the same Wi-Fi.</li><li>The browser address uses the host&#x27;s current Wi-Fi IPv4 address.</li><li>Port <code>8765</code> is not blocked by Windows Defender Firewall.</li><li><code>http://192.168.1.117:8765/api/health</code> opens from the other device.</li><li>I rejoin if the service was restarted.</li></ol>
+<h3 id="a-peer-shows-remember">A peer shows <code>REMEMBER</code></h3>
+<p><code>REMEMBER</code> means the host has retained the node but its heartbeat exceeded the timeout. I bring the browser tab to the foreground or reconnect the device. A valid heartbeat changes it back to <code>ACTIVE</code>, then <code>VERIFIED</code>.</p>
+<h3 id="the-room-is-playing-but-one-headset-is-silent">The room is playing but one headset is silent</h3>
+<p>I select <strong>Enable this speaker</strong> on that peer, confirm the correct Windows sound output, check the local BlueShare volume, and confirm the browser tab is not muted. Browsers require a local user action before remote playback is allowed.</p>
+<h2 id="how-people-can-share-blueshare">How people can share BlueShare</h2>
+<p>I want people to share BlueShare as an invitation to a trusted local moment:</p>
+<ol><li>One person hosts the service.</li><li>The host shares the LAN URL and temporary pairing code only with the people present.</li><li>Each person joins with a recognizable device name.</li><li>Each person connects their own speaker or headset.</li><li>The group shares media it has the right to play.</li><li>Every verified peer can interact with the room, not just the host.</li><li>When the moment ends, the host presses <code>Ctrl+C</code> and the temporary session is gone.</li></ol>
+<p>People can also share a provider link, such as the YouTube Music example, but each listener must use the provider&#x27;s authorized playback. BlueShare should not be used to bypass access controls, copy protected streams, or distribute media without permission.</p>
+<h2 id="what-i-want-to-build-next">What I want to build next</h2>
+<p>My next steps for BlueShare are:</p>
+<ul><li>official provider-link adapters that synchronize authorized players;</li><li>encrypted HTTPS transport and persistent device identity;</li><li>explicit host and participant media permissions;</li><li>better drift measurement for Bluetooth output latency;</li><li>Windows service installation and a packaged desktop shell;</li><li>Android-compatible peers;</li><li>physical ranging adapters that replace manual coordinates; and</li><li>exportable media-room and movement evidence reports.</li></ul>
+<p>The long-term idea remains simple: a network should understand the people and devices participating in a moment, preserve consent, recover safely from failure, and make sharing feel direct.</p>
+<h2 id="quick-reference">Quick reference</h2>
+<div class="table-wrap"><table><thead><tr><th>Item</th><th>Current value</th></tr></thead><tbody><tr><td>Host URL</td><td><code>http://HOST_IP:8765/</code></td></tr><tr><td>Example host</td><td><code>http://192.168.1.117:8765/</code></td></tr><tr><td>Service</td><td><code>packages/python/blueshare/peer_service.py</code></td></tr><tr><td>Current protocol</td><td>BlueShare trusted-LAN peer and media protocol 0.2</td></tr><tr><td>Current media source</td><td>User-selected local audio file</td></tr><tr><td>Provider URL support</td><td>Link handoff only; no extraction or rebroadcasting</td></tr><tr><td>Peer media controls</td><td>Play, pause, seek, stop</td></tr><tr><td>Volume</td><td>Local to each device</td></tr><tr><td>Bluetooth</td><td>Paired and routed by Windows on each peer</td></tr><tr><td>Security boundary</td><td>Trusted LAN, temporary code, unencrypted HTTP</td></tr></tbody></table></div>
+<h2 id="closing">Closing</h2>
+<p>I am Nnamdi Michael Okpala, creator of BlueShare for OBINexus Computing. I am building this project around a belief that technology should help people share moments while preserving clear boundaries, consent, and control.</p>
+<p><strong>BlueShare - Sharing Moments Matters.</strong></p>
+<p>Contact me at <a href="mailto:okpalan@protonmail.com">okpalan@protonmail.com</a>.</p></article>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <p>BlueShare - Sharing Moments Matters. Nnamdi Michael Okpala, OBINexus Computing. <a href="mailto:okpalan@protonmail.com">okpalan@protonmail.com</a></p>
+    <p>This static site documents the prototype. The live peer and media service runs on a trusted Windows host; GitLab Pages does not run that Python service.</p>
+  </footer>
+</body>
+</html>

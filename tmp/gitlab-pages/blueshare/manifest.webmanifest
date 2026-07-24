@@ -1,0 +1,16 @@
+{
+  "name": "BlueShare - Sharing Moments Matters",
+  "short_name": "BlueShare",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#061321",
+  "theme_color": "#071522",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -9,6 +9,7 @@ __pycache__/
 build/
 dist/
 out/
+public/
 target/
 node_modules/
 .vite/
