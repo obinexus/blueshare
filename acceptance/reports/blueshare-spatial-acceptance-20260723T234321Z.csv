@@ -1,0 +1,17 @@
+timestamp,elapsed_s,event,node_a,node_b,ground_truth_m,reported_ab_m,reported_ba_m,absolute_error_m,symmetry_delta_m,tolerance_m,nearest_to_a,mmuko_states,passed,note
+2026-07-23T23:43:21Z,0.0,mmuko_bootstrap,,,,,,,,,,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED""}",True,A and B reached VERIFIED
+2026-07-23T23:43:21Z,0.0,movement_sample,A,B,1.0,1.0,1.0,0.0,0.0,0.01,B,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED""}",True,metre checkpoint
+2026-07-23T23:43:22Z,1.0,movement_sample,A,B,2.0,2.0,2.0,0.0,0.0,0.01,B,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED""}",True,metre checkpoint
+2026-07-23T23:43:22.250000Z,1.25,device_c_added,A,C,4.25,4.25,,0.0,,0.01,B,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,B must remain A's nearest neighbour
+2026-07-23T23:43:23Z,2.0,movement_sample,A,B,3.0,3.0,3.0,0.0,0.0,0.01,B,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,path sample
+2026-07-23T23:43:24Z,3.0,movement_sample,A,B,4.0,4.0,4.0,0.0,0.0,0.01,B,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,path sample
+2026-07-23T23:43:25Z,4.0,movement_sample,A,B,5.0,5.0,5.0,0.0,0.0,0.01,C,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,nearest neighbour must switch from B to C
+2026-07-23T23:43:26Z,5.0,movement_sample,A,B,6.0,6.0,6.0,0.0,0.0,0.01,C,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,path sample
+2026-07-23T23:43:27Z,6.0,movement_sample,A,B,7.0,7.0,7.0,0.0,0.0,0.01,C,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,path sample
+2026-07-23T23:43:28Z,7.0,movement_sample,A,B,8.0,8.0,8.0,0.0,0.0,0.01,C,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,path sample
+2026-07-23T23:43:29Z,8.0,movement_sample,A,B,9.0,9.0,9.0,0.0,0.0,0.01,C,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,path sample
+2026-07-23T23:43:30Z,9.0,movement_sample,A,B,10.0,10.0,10.0,0.0,0.0,0.01,C,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,metre checkpoint
+2026-07-23T23:43:30.250000Z,9.25,movement_monotonicity,A,B,,,,,,,,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,B moved monotonically from 1 m to 10 m
+2026-07-23T23:43:31Z,10.0,device_b_disconnected,A,B,,,,,,,C,"{""A"": ""VERIFIED"", ""B"": ""REMEMBER"", ""C"": ""VERIFIED""}",True,B is REMEMBER and excluded from active topology
+2026-07-23T23:43:32Z,11.0,device_b_reconnected,A,B,2.5,2.5,,0.0,,0.01,B,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,fresh observation restores B to VERIFIED
+2026-07-23T23:43:33Z,12.0,stale_coordinate_rejected,A,B,,2.5,,,,0.01,B,"{""A"": ""VERIFIED"", ""B"": ""VERIFIED"", ""C"": ""VERIFIED""}",True,an older 99 m coordinate did not replace the fresh 2.5 m coordinate

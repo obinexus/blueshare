@@ -1,29 +1,14 @@
-# OBINexus BlueShare: Bluetooth Pay-As-You-Go WiFi Service
+# BlueShare2Go compatibility path
 
-## Service Overview
-Transform individual mobile data plans into shared, cost-efficient group connectivity through Bluetooth mesh networking with real-time microtransaction cost sharing.
+BlueShare2Go is retained as a compatibility name because the legacy release
+script references a public GitHub repository and npm package under this name.
 
-## Quick Start
-```bash
-# Initialize BlueShare service
-./scripts/blueshare_init.sh
+The source material moved to:
 
-# Create a network
-./scripts/create_network.sh --topology=star --duration=3600
+- C demonstrations and headers: `../native/blueshare-core/`
+- Python demonstrations: `../packages/python/blueshare/`
+- build/network/release scripts: `../scripts/`
+- original service documents: `../docs/architecture/`
 
-# Join existing network
-./scripts/join_network.sh --network-id=<network_id>
-```
-
-## Architecture
-- **Bluetooth LE** for device discovery and coordination
-- **Mobile Hotspot** for internet connectivity sharing  
-- **Lightning Network** for instant microtransactions
-- **Node-Zero** for privacy-preserving usage tracking
-
-## OBINexus Integration
-- **Division**: OBINexus Computing
-- **Framework**: Hot-wiring Architecture compatible
-- **Tier Access**: Open/Business/Heart levels supported
-
-For complete technical specification, see `docs/technical/blueshare_specification.md`
+See `../docs/repository-migration-map.md` for the exact path mapping. No source
+code is duplicated in this compatibility directory.

@@ -1,111 +1,111 @@
-# OBINexus BlueShare
+# BlueShare
 
-**Created by:** Nnamdi Michael Okpala<br>
-**Division:** OBINexus Computing<br>
-**Motto:** Share moments that matter.
+BlueShare is an OBINexus research and prototype repository for representing
+nearby devices as topology nodes, measuring simulated spatial relationships in
+metres, and exploring MMUKO/NSIGII lifecycle and consensus ideas.
 
-## What It Is
+The repository is now organized by responsibility. It does **not** yet contain
+an integrated desktop application, Bluetooth service, physical ranging adapter,
+Android package, Rust FFI layer, or production network daemon.
 
-BlueShare is a real-time tethering and sharing platform intended to turn nearby devices into a small, resilient network. Instead of every person relying on an isolated connection or playback device, BlueShare aims to let participants share media timing, files, folders, connectivity, and live session state.
+## What currently works
 
-It is designed for connection that feels natural:
-a house full of people working quietly, a team syncing ideas, or friends sharing the same track at the same second.
+- A deterministic Python spatial MVP with positions and distances in metres.
+- Acceptance tests for 1, 2, 5, and 10 metre checkpoints, A/B symmetry,
+  continuous movement, nearest-neighbour switching, reconnect recovery, and
+  stale-coordinate rejection.
+- Timestamped JSON and CSV acceptance reports.
+- Three independent native demonstrations: BlueShare mixed-consent flow,
+  Linux NSIGII sampling, and an OpenSSL Node-Zero example.
+- Experimental Python NSIGII/BlueShare demonstrations and NumPy graph pruning.
 
-## How It Works
+The spatial acceptance source is a deterministic coordinate simulator. Passing
+it does not prove real-world Bluetooth, radio, or hardware ranging accuracy.
 
-BlueShare builds sessions from nodes and links arranged as bus, ring, mesh, or other resolved topologies. The intended desktop application will use the MMUKO boot lifecycle to determine whether its local node and current topology are ready:
-
-```text
-SPARSE -> REMEMBER -> ACTIVE -> VERIFY
-```
-
-Readiness is reported using NSIGII-style outcomes:
-
-- `YES`: topology and node readiness are verified.
-- `NO`: a deterministic failure occurred.
-- `MAYBE`: discovery or verification is incomplete.
-
-These terms describe application state and topology resolution. They must not be presented as physical quantum computing.
-
-## Why It Exists
-
-BlueShare is not limited to Bluetooth. Its broader purpose is to provide a transport-independent sharing protocol that can eventually work across Bluetooth, local networking, Wi-Fi, and other supported links.
-
-The first desktop iteration will use a deterministic simulated transport. Simulation must be labelled honestly; it is not real Bluetooth support.
-
-## Repository Status
-
-BlueShare is currently in the repository-audit and architecture stage. A complete desktop application does not yet exist in this repository.
-
-Current material includes:
-
-- Product and research documentation under `blueshare-polyglot-exosketelon/`.
-- An untracked legacy C/Python prototype under `blueshare2go/`.
-- Standalone demonstrations of topology, NSIGII-style state, privacy concepts, and graph pruning.
-
-The legacy prototype is not a production implementation. Its existing CMake file references missing sources, its C programs are disconnected demonstrations, and its Python files are not an automated test suite.
-
-## Target Architecture
-
-The planned desktop monorepo separates responsibilities across these layers:
+## Repository map
 
 ```text
-apps/desktop/                 Vue, Vite, plain CSS, and NW.js shell
-packages/protocol/            Versioned frontend/backend message contract
-crates/blueshare-runtime/     Safe Rust runtime, daemon, transport, and FFI
-native/blueshare-core/        Deterministic C11 MMUKO and topology core
-docs/                         Audit, architecture, protocol, build, and test records
+apps/desktop/                 Desktop status and future integration boundary
+native/blueshare-core/        C sources, public headers, CMake, constitutional driver
+packages/python/blueshare/    Experimental Python demonstrations
+acceptance/                   Spatial MVP, tests, and retained evidence reports
+research/                     Derivative tracing, pruning, and NLM Atlas material
+docs/                         Architecture, deployment, specifications, vision, reference
+assets/                       Unmodified audio and image references
+scripts/                      Build, release, and network compatibility scripts
+.github/workflows/            Pruning CI
 ```
 
-The first working vertical slice will:
+BlueShare2Go remains as a compatibility name at
+[`blueshare2go/README.md`](blueshare2go/README.md); canonical source now lives in
+the directories above.
 
-1. Start the local NW.js desktop application.
-2. Launch the Rust backend.
-3. Load the native C core.
-4. Create a privacy-preserving local node identity.
-5. Run MMUKO boot and display phase events.
-6. Add a simulated peer and resolve a two-node topology.
-7. Simulate shared-media timing and peer reconnection.
-8. Shut down without leaving a backend process running.
+## Spatial acceptance
 
-## Source-of-Truth Policy
+From the repository root on Windows:
 
-Implementation semantics must come from:
-
-- Files already present in this repository.
-- Static OBINexus documentation available locally.
-- Repositories and documentation owned by [`obinexus`](https://github.com/obinexus) or [`obinexusmk2`](https://github.com/obinexusmk2).
-- In particular, [`obinexus/mmuko-os`](https://github.com/obinexus/mmuko-os) and its `boot/mmuko_boot.psc` specification.
-
-Undefined terms and temporary engineering interpretations must be recorded in `docs/OPEN_QUESTIONS.md`. The project must not invent hardware identity, topology, or MMUKO semantics and present them as verified OBINexus rules.
-
-## Safety and Privacy
-
-- Never log, display, or transmit a raw motherboard serial, MAC address, machine GUID, or operating-system hardware identifier.
-- Keep unsafe Rust isolated to the FFI boundary with explicit safety documentation.
-- Validate all frontend input in the Rust backend.
-- Use bounded retries and deadlines; never retry forever.
-- Require local frontend assets and avoid telemetry or cloud dependencies.
-- Preserve existing user work and do not change project licences as part of implementation.
-
-## Planned Developer Interface
-
-Once the desktop scaffold is implemented, the repository root will provide:
-
-```text
-npm run dev
-npm run build
-npm run preview
-npm run test
-npm run check
-npm run desktop
+```powershell
+py -3.14 -m unittest discover -s acceptance/tests -v
+py -3.14 acceptance/run_spatial_acceptance.py
 ```
 
-These commands are targets, not claims about the repository's current runnable state.
+The runner writes timestamped reports to `acceptance/reports/` by default. Four
+existing evidence files are intentionally versioned and are not ignored.
 
-## Learn More
+## Native build
 
-You can explore the ongoing work at [github.com/obinexus/blueshare](https://github.com/obinexus/blueshare).
+Windows with CMake and a C compiler:
 
-The future is shared.
-**Share with BlueShare.**
+```powershell
+cmake -S . -B build
+cmake --build build --config Debug
+ctest --test-dir build -C Debug --output-on-failure
+```
+
+WSL/Linux:
+
+```bash
+bash scripts/build/build-blueshare-core.sh Release
+```
+
+Platform-dependent targets are enabled only when their dependencies exist:
+OpenSSL controls the Node-Zero demonstration, and Linux `getrandom()` controls
+the NSIGII C demonstration. The public header describes a future library API;
+no source currently implements that API as a linkable library.
+
+## Experimental Python demonstrations
+
+```powershell
+python packages/python/blueshare/nsiggi.py
+python packages/python/blueshare/blueshare.py
+```
+
+These are standalone simulations, not a host-to-host BlueShare service.
+
+## Documentation
+
+- [`README2.md`](README2.md) provides detailed Windows, WSL/Linux, CMake,
+  Python, test, run, and troubleshooting instructions.
+- [`docs/current-status.md`](docs/current-status.md) separates implemented,
+  experimental, research, planned, and incomplete work.
+- [`docs/repository-audit.md`](docs/repository-audit.md) records the pre-move
+  evidence and duplicate analysis.
+- [`docs/repository-migration-map.md`](docs/repository-migration-map.md) records
+  every executed relocation and removal.
+- [`docs/repository-cleanup-report.md`](docs/repository-cleanup-report.md)
+  records validation results and remaining gaps.
+- [`docs/README.md`](docs/README.md) indexes product and research documents.
+
+## Known incomplete interfaces
+
+The compatibility scripts for `blueshare_cli` and `blueshare_test` stop with
+exit code 2 and an explicit message because those binaries do not exist. The
+historical release script is retained but cannot run without package metadata.
+See [`scripts/README.md`](scripts/README.md) and
+[`native/blueshare-core/README.md`](native/blueshare-core/README.md).
+
+## Project identity
+
+Created by Nnamdi Michael Okpala for OBINexus Computing.
+
+> Share moments that matter.

@@ -1,0 +1,374 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-07-23T23:45:48Z",
+  "measurement_source": "deterministic-coordinate-simulator",
+  "units": "metres",
+  "hardware_ranging_validated": false,
+  "tolerance_m": 0.01,
+  "summary": {
+    "status": "PASS",
+    "events": 16,
+    "distance_samples": 13,
+    "required_checkpoints_m": [
+      1.0,
+      2.0,
+      5.0,
+      10.0
+    ],
+    "checkpoints_observed_m": [
+      1.0,
+      2.0,
+      5.0,
+      10.0
+    ],
+    "max_absolute_error_m": 0.0,
+    "max_symmetry_delta_m": 0.0,
+    "movement_monotonic": true,
+    "nearest_neighbor_switch": {
+      "from": "B",
+      "to": "C",
+      "passed": true
+    },
+    "disconnect_reconnect_passed": true,
+    "stale_coordinate_rejected": true
+  },
+  "limitations": [
+    "This run validates topology logic against deterministic coordinates.",
+    "It does not validate Bluetooth, GPS, UWB, RSSI, or other hardware ranging accuracy."
+  ],
+  "events": [
+    {
+      "timestamp": "2026-07-23T23:45:48Z",
+      "elapsed_s": 0.0,
+      "event": "mmuko_bootstrap",
+      "node_a": "",
+      "node_b": "",
+      "ground_truth_m": null,
+      "reported_ab_m": null,
+      "reported_ba_m": null,
+      "absolute_error_m": null,
+      "symmetry_delta_m": null,
+      "tolerance_m": null,
+      "nearest_to_a": null,
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED"
+      },
+      "passed": true,
+      "note": "A and B reached VERIFIED"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:48Z",
+      "elapsed_s": 0.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 1.0,
+      "reported_ab_m": 1.0,
+      "reported_ba_m": 1.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "B",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED"
+      },
+      "passed": true,
+      "note": "metre checkpoint"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:49Z",
+      "elapsed_s": 1.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 2.0,
+      "reported_ab_m": 2.0,
+      "reported_ba_m": 2.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "B",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED"
+      },
+      "passed": true,
+      "note": "metre checkpoint"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:49.250000Z",
+      "elapsed_s": 1.25,
+      "event": "device_c_added",
+      "node_a": "A",
+      "node_b": "C",
+      "ground_truth_m": 4.25,
+      "reported_ab_m": 4.25,
+      "reported_ba_m": null,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": null,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "B",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "B must remain A's nearest neighbour"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:50Z",
+      "elapsed_s": 2.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 3.0,
+      "reported_ab_m": 3.0,
+      "reported_ba_m": 3.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "B",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "path sample"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:51Z",
+      "elapsed_s": 3.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 4.0,
+      "reported_ab_m": 4.0,
+      "reported_ba_m": 4.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "B",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "path sample"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:52Z",
+      "elapsed_s": 4.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 5.0,
+      "reported_ab_m": 5.0,
+      "reported_ba_m": 5.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "C",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "nearest neighbour must switch from B to C"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:53Z",
+      "elapsed_s": 5.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 6.0,
+      "reported_ab_m": 6.0,
+      "reported_ba_m": 6.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "C",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "path sample"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:54Z",
+      "elapsed_s": 6.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 7.0,
+      "reported_ab_m": 7.0,
+      "reported_ba_m": 7.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "C",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "path sample"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:55Z",
+      "elapsed_s": 7.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 8.0,
+      "reported_ab_m": 8.0,
+      "reported_ba_m": 8.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "C",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "path sample"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:56Z",
+      "elapsed_s": 8.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 9.0,
+      "reported_ab_m": 9.0,
+      "reported_ba_m": 9.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "C",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "path sample"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:57Z",
+      "elapsed_s": 9.0,
+      "event": "movement_sample",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 10.0,
+      "reported_ab_m": 10.0,
+      "reported_ba_m": 10.0,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": 0.0,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "C",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "metre checkpoint"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:57.250000Z",
+      "elapsed_s": 9.25,
+      "event": "movement_monotonicity",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": null,
+      "reported_ab_m": null,
+      "reported_ba_m": null,
+      "absolute_error_m": null,
+      "symmetry_delta_m": null,
+      "tolerance_m": null,
+      "nearest_to_a": null,
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "B moved monotonically from 1 m to 10 m"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:58Z",
+      "elapsed_s": 10.0,
+      "event": "device_b_disconnected",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": null,
+      "reported_ab_m": null,
+      "reported_ba_m": null,
+      "absolute_error_m": null,
+      "symmetry_delta_m": null,
+      "tolerance_m": null,
+      "nearest_to_a": "C",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "REMEMBER",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "B is REMEMBER and excluded from active topology"
+    },
+    {
+      "timestamp": "2026-07-23T23:45:59Z",
+      "elapsed_s": 11.0,
+      "event": "device_b_reconnected",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": 2.5,
+      "reported_ab_m": 2.5,
+      "reported_ba_m": null,
+      "absolute_error_m": 0.0,
+      "symmetry_delta_m": null,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "B",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "fresh observation restores B to VERIFIED"
+    },
+    {
+      "timestamp": "2026-07-23T23:46:00Z",
+      "elapsed_s": 12.0,
+      "event": "stale_coordinate_rejected",
+      "node_a": "A",
+      "node_b": "B",
+      "ground_truth_m": null,
+      "reported_ab_m": 2.5,
+      "reported_ba_m": null,
+      "absolute_error_m": null,
+      "symmetry_delta_m": null,
+      "tolerance_m": 0.01,
+      "nearest_to_a": "B",
+      "mmuko_states": {
+        "A": "VERIFIED",
+        "B": "VERIFIED",
+        "C": "VERIFIED"
+      },
+      "passed": true,
+      "note": "an older 99 m coordinate did not replace the fresh 2.5 m coordinate"
+    }
+  ]
+}

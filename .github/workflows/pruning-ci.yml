@@ -1,0 +1,37 @@
+name: pruning-ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy
+      - run: python -m py_compile research/pruning/pruning_operator.py
+      - name: Verify pruning invariants
+        run: |
+          python - <<'PY'
+          import numpy as np
+          from research.pruning.pruning_operator import (
+              compute_fod_score,
+              node_pruning,
+          )
+
+          tensor = np.ones((1, 1, 4, 4))
+          weights = np.array([0.1, 0.9, 0.2, 0.05])
+          pruned, h_norm = node_pruning(tensor, weights, 0.25)
+          fod = compute_fod_score(pruned, h_norm)
+          assert pruned.shape == tensor.shape
+          assert 0 <= h_norm <= 1
+          assert 0 <= fod <= 6
+          print(f"FoD check passed: {fod:.2f}")
+          PY

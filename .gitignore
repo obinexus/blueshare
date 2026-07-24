@@ -1,0 +1,37 @@
+# Python caches and tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build outputs
+build/
+dist/
+out/
+target/
+node_modules/
+.vite/
+*.o
+*.so
+*.a
+*.exe
+*.class
+
+# Runtime/demo outputs
+*.log
+logs/
+devices/*.key
+constitutional_reports/
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+*.pro.user
+
+# Acceptance reports are intentionally not ignored. They are timestamped
+# evidence and are reviewed explicitly before versioning.
