@@ -10,6 +10,7 @@ build/
 dist/
 out/
 public/
+_site/
 target/
 node_modules/
 .vite/

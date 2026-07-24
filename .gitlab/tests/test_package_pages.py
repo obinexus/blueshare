@@ -46,6 +46,22 @@ class PackagePagesTests(unittest.TestCase):
         root = (self.output / "index.html").read_text(encoding="utf-8")
         self.assertIn("./blueshare/", root)
 
+    def test_builds_article_at_artifact_root_for_github_pages(self) -> None:
+        site = package_pages.build_site(
+            self.output,
+            "/",
+            "https://obinexus.github.io/blueshare/",
+        )
+        package_pages.verify_bundle(self.output, "/")
+        self.assertEqual(site, self.output)
+        page = (site / "index.html").read_text(encoding="utf-8")
+        self.assertIn("BlueShare - Sharing Moments Matters", page)
+        self.assertIn(
+            'rel="canonical" href="https://obinexus.github.io/blueshare/"',
+            page,
+        )
+        self.assertNotIn("http-equiv=\"refresh\"", page)
+
     def test_refuses_repository_root_as_output(self) -> None:
         with self.assertRaises(ValueError):
             package_pages.output_path(ROOT)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and verify the dependency-free BlueShare GitLab Pages bundle."""
+"""Build and verify the dependency-free BlueShare static Pages bundle."""
 
 from __future__ import annotations
 
@@ -259,7 +259,7 @@ def site_html(article: str, headings: list[tuple[str, str]], canonical_url: str)
   </main>
   <footer class="site-footer">
     <p>BlueShare - Sharing Moments Matters. Nnamdi Michael Okpala, OBINexus Computing. <a href="mailto:okpalan@protonmail.com">okpalan@protonmail.com</a></p>
-    <p>This static site documents the prototype. The live peer and media service runs on a trusted Windows host; GitLab Pages does not run that Python service.</p>
+    <p>This static site documents the prototype. The live peer and media service runs on a trusted Windows host; static Pages hosting does not run that Python service.</p>
   </footer>
 </body>
 </html>
@@ -313,13 +313,19 @@ def build_site(output: Path, base_path: str, canonical_url: str) -> Path:
     }
     (site / "manifest.webmanifest").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
+    github_run_url = "local"
+    if os.environ.get("GITHUB_SERVER_URL") and os.environ.get("GITHUB_REPOSITORY") and os.environ.get("GITHUB_RUN_ID"):
+        github_run_url = (
+            f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+            f"/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+        )
     deployment = {
         "site": "BlueShare",
         "base_path": base_path or "/",
         "canonical_url": canonical_url,
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "commit": os.environ.get("CI_COMMIT_SHA", "local"),
-        "pipeline_url": os.environ.get("CI_PIPELINE_URL", "local"),
+        "commit": os.environ.get("CI_COMMIT_SHA") or os.environ.get("GITHUB_SHA", "local"),
+        "pipeline_url": os.environ.get("CI_PIPELINE_URL") or github_run_url,
     }
     (site / "deployment.json").write_text(json.dumps(deployment, indent=2) + "\n", encoding="utf-8")
     (site / "404.html").write_text(
@@ -328,7 +334,8 @@ def build_site(output: Path, base_path: str, canonical_url: str) -> Path:
         '<div><p class="eyebrow">404</p><h1>Page not found</h1><p><a class="button" href="./">Return to BlueShare</a></p></div></main></html>\n',
         encoding="utf-8",
     )
-    (output / "index.html").write_text(root_index(base_path, canonical_url), encoding="utf-8")
+    if base_path:
+        (output / "index.html").write_text(root_index(base_path, canonical_url), encoding="utf-8")
     verify_bundle(output, base_path)
     return site
 
